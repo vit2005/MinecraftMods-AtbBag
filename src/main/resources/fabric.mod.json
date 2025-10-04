@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "atbbag",
+	"version": "${version}",
+	"name": "atbbag",
+	"description": "This is an example description! Tell everyone what your mod is about!",
+	"authors": [
+		"Me!"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/atbbag/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.vit2005.Atbbag"
+		],
+		"fabric-datagen": [
+			"com.vit2005.AtbbagDataGenerator"
+		]
+	},
+	"mixins": [
+		"atbbag.mixins.json"
+	],
+    "depends": {
+      "fabricloader": ">=0.16.14",
+      "minecraft": ">=1.21.6",
+      "java": ">=21",
+      "fabric-api": "*",
+      "polymer-core": ">=0.13.3",
+      "polymer-resource-pack": ">=0.13.3",
+      "polymer-virtual-entity": ">=0.13.3"
+    },
+	"suggests": {
+		"another-mod": "*"
+	}
+}
