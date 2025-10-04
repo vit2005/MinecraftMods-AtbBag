@@ -2,8 +2,7 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [64, 64],
     "textures": {
-      "0": "atbbag:block/atb_bag",
-      "particle": "atbbag:block/atb_bag"
+      "0": "atbbag:block/atb_bag_block"
     },
 	"elements": [
 		{
