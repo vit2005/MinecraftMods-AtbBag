@@ -1,30 +1,24 @@
 package com.vit2005;
 
-import eu.pb4.polymer.core.api.item.PolymerBlockItem;
 import eu.pb4.polymer.core.api.item.PolymerItem;
-import eu.pb4.polymer.resourcepack.api.PolymerResourcePackUtils;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.Items;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.item.tooltip.TooltipType;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 import xyz.nucleoid.packettweaker.PacketContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 public class AtbBagItem extends Item implements PolymerItem {
     private static final Logger LOGGER = LoggerFactory.getLogger("atbbag");
@@ -36,21 +30,20 @@ public class AtbBagItem extends Item implements PolymerItem {
 
     @Override
     public Item getPolymerItem(ItemStack itemStack, PacketContext context) {
-        return Items.BUNDLE; // Використовуємо BUNDLE як базу (він має модель 3D)
+        // BUNDLE або PAPER - обидва підходять
+        return Items.BUNDLE;
     }
 
     @Override
-    public void modifyBasePolymerItemStack(ItemStack out, ItemStack stack, PacketContext context) {
-        LOGGER.info("modifyBasePolymerItemStack called for ATB_BAG");
-        LOGGER.info("Input stack: " + stack);
-        LOGGER.info("Output stack before: " + out);
+    public ItemStack getPolymerItemStack(ItemStack itemStack, TooltipType tooltipType, PacketContext context) {
+        ItemStack out = PolymerItem.super.getPolymerItemStack(itemStack, tooltipType, context);
 
-        // Встановлюємо кастомну модель
-        Identifier modelId = Identifier.of("atbbag", "atb_bag");
-        out.set(DataComponentTypes.ITEM_MODEL, modelId);
+        // Додаємо кастомну модель через item_model компонент (1.21.4+)
+        out.set(DataComponentTypes.ITEM_MODEL, Identifier.of("atbbag", "item/atb_bag"));
 
-        LOGGER.info("Set model to: " + modelId);
-        LOGGER.info("Output stack after: " + out);
+        LOGGER.info("Creating polymer item stack with model: atbbag:item/atb_bag");
+
+        return out;
     }
 
     @Override
@@ -66,11 +59,11 @@ public class AtbBagItem extends Item implements PolymerItem {
 
         LOGGER.info("Placing ATB Bag block at: " + pos);
 
-        BlockState state = AtbBagBlocks.ATB_BAG_BLOCK.getDefaultState();
-        if (world.setBlockState(pos, state)) {
-            BlockEntity blockEntity = world.getBlockEntity(pos);
+        if (world.setBlockState(pos, AtbBagBlocks.ATB_BAG_BLOCK.getDefaultState())) {
+            var blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof AtbBagBlockEntity bag) {
-                bag.readComponents(stack);
+                // Переносимо дані з айтему в блок
+                bag.readComponents(stack.getComponents());
                 bag.markDirty();
                 LOGGER.info("Block placed and data transferred");
             }
@@ -86,4 +79,3 @@ public class AtbBagItem extends Item implements PolymerItem {
         return ActionResult.FAIL;
     }
 }
-

@@ -1,6 +1,5 @@
 package com.vit2005;
 
-import eu.pb4.polymer.core.api.block.SimplePolymerBlock;
 import eu.pb4.polymer.core.api.item.PolymerBlockItem;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
@@ -10,6 +9,7 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -40,15 +40,20 @@ public class AtbBagBlocks {
         Item item = new PolymerBlockItem(block, new Item.Settings().registryKey(key), Items.BARRIER) {
             @Override
             public Item getPolymerItem(ItemStack itemStack, PacketContext context) {
-                return Items.BARRIER; // Використовуємо BARRIER замість PAPER
+                return Items.BARRIER;
             }
 
             @Override
-            public void modifyBasePolymerItemStack(ItemStack out, ItemStack stack, PacketContext context) {
-                Identifier modelId = Identifier.of("atbbag", "item/atb_bag_block_display");
+            public ItemStack getPolymerItemStack(ItemStack itemStack, TooltipType tooltipType, PacketContext context) {
+                ItemStack out = super.getPolymerItemStack(itemStack, tooltipType, context);
+
+                // Використовуємо новий item_model компонент
+                Identifier modelId = Identifier.of("atbbag", "item/atb_bag_block");
                 out.set(DataComponentTypes.ITEM_MODEL, modelId);
 
                 LOGGER.info("Setting block item model to: " + modelId);
+
+                return out;
             }
         };
 
