@@ -1,0 +1,19 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "property": "minecraft:custom_model_data",
+    "cases": [
+      {
+        "when": "atb_bag",
+        "model": {
+          "type": "model",
+          "model": "atbbag:atb_bag"
+        }
+      }
+    ],
+    "fallback": {
+      "type": "model",
+      "model": "item/bundle"
+    }
+  }
+}

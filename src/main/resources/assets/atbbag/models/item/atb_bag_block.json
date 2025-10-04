@@ -2,6 +2,5 @@
   "model": {
     "type": "minecraft:model",
     "model": "atbbag:block/atb_bag_block"
-  },
-  "tints": []
+  }
 }

@@ -36,5 +36,13 @@
     },
 	"suggests": {
 		"another-mod": "*"
-	}
+	},
+    "custom": {
+      "modmenu": {
+        "parent": "fabric-api"
+      },
+      "polymer:auto_host": {
+        "enabled": true
+      }
+  }
 }

@@ -37,19 +37,22 @@ public class AtbBagBlocks {
     private static void registerBlockItem(String name, Block block) {
         RegistryKey<Item> key = RegistryKey.of(RegistryKeys.ITEM, Identifier.of("atbbag", name));
 
-        Item item = new PolymerBlockItem(block, new Item.Settings().registryKey(key), Items.BARRIER) {
+        Item item = new PolymerBlockItem(block, new Item.Settings().registryKey(key), Items.PAPER) {
             @Override
             public Item getPolymerItem(ItemStack itemStack, PacketContext context) {
-                return Items.BARRIER;
+                return Items.PAPER;
             }
 
             @Override
             public ItemStack getPolymerItemStack(ItemStack itemStack, TooltipType tooltipType, PacketContext context) {
                 ItemStack out = super.getPolymerItemStack(itemStack, tooltipType, context);
 
-                // Використовуємо новий item_model компонент
+                // Використовуємо item_model компонент для моделі блоку
                 Identifier modelId = Identifier.of("atbbag", "item/atb_bag_block");
                 out.set(DataComponentTypes.ITEM_MODEL, modelId);
+
+                // Копіюємо компоненти з оригінального стеку
+                out.applyComponentsFrom(itemStack.getComponents());
 
                 LOGGER.info("Setting block item model to: " + modelId);
 
@@ -64,17 +67,17 @@ public class AtbBagBlocks {
     public static void registerBlocks() {
         LOGGER.info("Registering ATB Bag block...");
 
-        // сам блок
+        // Реєструємо блок
         ATB_BAG_BLOCK = registerBlock("atb_bag_block",
                 AtbBagBlock::new,
                 Block.Settings.copy(Blocks.BARREL),
                 Blocks.BARREL
         );
 
-        // айтем блоку
+        // Реєструємо айтем блоку
         registerBlockItem("atb_bag_block", ATB_BAG_BLOCK);
 
-        // block entity
+        // Реєструємо block entity
         ATB_BAG_BLOCK_ENTITY = Registry.register(
                 Registries.BLOCK_ENTITY_TYPE,
                 Identifier.of("atbbag", "atb_bag"),
